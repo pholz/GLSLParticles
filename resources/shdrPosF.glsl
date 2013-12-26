@@ -14,7 +14,9 @@ void main()
   //  colFac.rgb *= texture2D( texPos, gl_TexCoord[0].st ).rgb;
 	
 	//    colFac.a *= .35;
-	colFac.a *= (1.0-age);
+	colFac.r *= (1.0-age);
+	colFac.b = sin(age*10.0)*0.5 + 0.5;
+	colFac.a = 0.6;
 	
 //	colFac.r = texture2D(texSy, gl_TexCoord[0].st).r;
     

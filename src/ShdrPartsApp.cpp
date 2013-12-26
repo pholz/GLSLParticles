@@ -24,7 +24,7 @@ using namespace std;
 
 #define WIDTH 512
 #define HEIGHT 512
-#define PARTICLES 400
+#define PARTICLES 500
 
 class ShdrPartsApp : public AppNative
 {
@@ -250,7 +250,7 @@ void ShdrPartsApp::setup()
     
 	// in order for this to work, you must run simple server which is a syphon test application
     // feel free to change the app and server name for your specific case
-    m_clientSyphon.set("syfft", "Max");
+    m_clientSyphon.set("qtz1", "Quartz Composer");
     
     m_clientSyphon.bind();
 	
@@ -307,6 +307,7 @@ void ShdrPartsApp::update()
 	m_shdrVel.uniform("oPositions", 4);
 	m_shdrVel.uniform("texNoise", 5);
 	m_shdrVel.uniform("texNoise2", 6);
+	m_shdrVel.uniform("time", (float) this->getElapsedSeconds());
 	
 	glBegin(GL_QUADS);
 	glTexCoord2f( 0.0f, 0.0f); glVertex2f( 0.0f, 0.0f);
@@ -401,7 +402,7 @@ void ShdrPartsApp::draw()
 		m_shdrDbg.uniform("dbgSy", 0);
 		
 		gl::pushMatrices();
-		gl::draw(sytex, Rectf(0.0, 0.0, getWindowHeight(), getWindowHeight()));
+		gl::draw(sytex, Rectf(0.0, 0.0, PARTICLES, PARTICLES));
 		
 //		glBegin(GL_QUADS);
 //		glTexCoord2f( 0.0f, 0.0f); glVertex2f( 0.0f, 0.0f);
