@@ -20,6 +20,7 @@
 		653CFD0726554E289A25A541 /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 898958CE978A4F7D82F05800 /* Syphon.framework */; };
 		6674B8BB186999CD00D8578E /* shdrDbgV.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 6674B8BA186999CD00D8578E /* shdrDbgV.glsl */; };
 		6674B8BD186999ED00D8578E /* shdrDbgF.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 6674B8BC186999ED00D8578E /* shdrDbgF.glsl */; };
+		667F7381186CA2C4000B4BA5 /* cross.png in Resources */ = {isa = PBXBuildFile; fileRef = 667F7380186CA2C4000B4BA5 /* cross.png */; };
 		66F7F8A3186881A10016431D /* point.png in Resources */ = {isa = PBXBuildFile; fileRef = 66F7F8A2186881A10016431D /* point.png */; };
 		66F7F8A8186884490016431D /* shdrPosF.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 66F7F8A4186884490016431D /* shdrPosF.glsl */; };
 		66F7F8A9186884490016431D /* shdrPosV.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 66F7F8A5186884490016431D /* shdrPosV.glsl */; };
@@ -85,6 +86,7 @@
 		6597887DCB8A4AE495141667 /* OscPrintReceivedElements.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = OscPrintReceivedElements.h; path = ../../cinder_dev/blocks/OSC/src/osc/OscPrintReceivedElements.h; sourceTree = "<group>"; };
 		6674B8BA186999CD00D8578E /* shdrDbgV.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = shdrDbgV.glsl; path = ../resources/shdrDbgV.glsl; sourceTree = "<group>"; };
 		6674B8BC186999ED00D8578E /* shdrDbgF.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = shdrDbgF.glsl; path = ../resources/shdrDbgF.glsl; sourceTree = "<group>"; };
+		667F7380186CA2C4000B4BA5 /* cross.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cross.png; path = ../resources/cross.png; sourceTree = "<group>"; };
 		66F7F8A2186881A10016431D /* point.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = point.png; path = ../resources/point.png; sourceTree = "<group>"; };
 		66F7F8A4186884490016431D /* shdrPosF.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = shdrPosF.glsl; path = ../resources/shdrPosF.glsl; sourceTree = "<group>"; };
 		66F7F8A5186884490016431D /* shdrPosV.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = shdrPosV.glsl; path = ../resources/shdrPosV.glsl; sourceTree = "<group>"; };
@@ -247,6 +249,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				667F7380186CA2C4000B4BA5 /* cross.png */,
 				66F7F8A4186884490016431D /* shdrPosF.glsl */,
 				66F7F8A5186884490016431D /* shdrPosV.glsl */,
 				66F7F8A6186884490016431D /* shdrVelF.glsl */,
@@ -391,6 +394,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				667F7381186CA2C4000B4BA5 /* cross.png in Resources */,
 				66F7F8A3186881A10016431D /* point.png in Resources */,
 				6674B8BD186999ED00D8578E /* shdrDbgF.glsl in Resources */,
 				66F7F8AA186884490016431D /* shdrVelF.glsl in Resources */,

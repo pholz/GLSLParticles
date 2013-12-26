@@ -24,7 +24,7 @@ using namespace std;
 
 #define WIDTH 512
 #define HEIGHT 512
-#define PARTICLES 400
+#define PARTICLES 200
 
 class ShdrPartsApp : public AppNative
 {
@@ -184,7 +184,7 @@ void ShdrPartsApp::setup()
 	gl::Texture::Format tFormatSmall;
 	//tFormat.setInternalFormat(GL_RGBA8);
 	
-	m_texSprite = gl::Texture(loadImage(loadResource("point.png")), tFormatSmall);
+	m_texSprite = gl::Texture(loadImage(loadResource("cross.png")), tFormatSmall);
 	
 	GLenum interp = GL_LINEAR;
 	
@@ -354,6 +354,7 @@ void ShdrPartsApp::draw()
 		gl::setMatricesWindow(getWindowSize());
 		gl::setViewport(getWindowBounds());
 		gl::enableAlphaBlending();
+		
 		gl::disableDepthRead();
 		gl::clear(ColorA(.0f, .0f, .0f, 1.0f));
 		gl::color(ColorA(1.f, 1.f, 1.f, 1.f));
@@ -431,6 +432,7 @@ void ShdrPartsApp::draw()
 		gl::setViewport(getWindowBounds());
 		gl::clear(ColorA(.0f, .0f, .0f, 1.0f));
 		gl::enableAlphaBlending();
+		glBlendFunc(GL_ONE, GL_ONE);
 		gl::disableDepthRead();
 
 		glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
