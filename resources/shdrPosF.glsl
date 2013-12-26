@@ -3,6 +3,7 @@
 uniform sampler2D texPos;
 uniform sampler2D texVel;
 uniform sampler2D texInf;
+uniform sampler2D texSprite;
 
 
 
@@ -10,13 +11,17 @@ varying float age;
 
 void main()
 {
-	vec4 colFac = vec4(1.0);//texture2D(spriteTex, gl_PointCoord);
-  //  colFac.rgb *= texture2D( texPos, gl_TexCoord[0].st ).rgb;
+//	vec4 colFac = vec4(1.0);
 	
-	//    colFac.a *= .35;
-	colFac.r *= (1.0-age);
-	colFac.b = sin(age*10.0)*0.5 + 0.5;
-	colFac.a = 0.6;
+	vec4 colFac = texture2D(texSprite, gl_PointCoord);
+	
+//	vec4 colFac = vec4(gl_PointCoord.s , gl_PointCoord.t, 0.0, 1.0);
+	
+	colFac.a *= (1.0-age);
+	colFac.g *= age;
+	colFac.r *= sin(age*10.0)*0.5 + 0.5;
+	colFac.b *= sqrt(age);
+//	colFac.a *= 0.6;
 	
 //	colFac.r = texture2D(texSy, gl_TexCoord[0].st).r;
     
