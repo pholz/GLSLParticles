@@ -18,6 +18,8 @@
 		5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
 		5323E6B60EAFCA7E003A9687 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B50EAFCA7E003A9687 /* QTKit.framework */; };
 		653CFD0726554E289A25A541 /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 898958CE978A4F7D82F05800 /* Syphon.framework */; };
+		6674B8BB186999CD00D8578E /* shdrDbgV.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 6674B8BA186999CD00D8578E /* shdrDbgV.glsl */; };
+		6674B8BD186999ED00D8578E /* shdrDbgF.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 6674B8BC186999ED00D8578E /* shdrDbgF.glsl */; };
 		66F7F8A3186881A10016431D /* point.png in Resources */ = {isa = PBXBuildFile; fileRef = 66F7F8A2186881A10016431D /* point.png */; };
 		66F7F8A8186884490016431D /* shdrPosF.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 66F7F8A4186884490016431D /* shdrPosF.glsl */; };
 		66F7F8A9186884490016431D /* shdrPosV.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 66F7F8A5186884490016431D /* shdrPosV.glsl */; };
@@ -81,6 +83,8 @@
 		5B8D519E84324EEE8895AF5D /* syphonClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = syphonClient.h; path = "../../cinder_dev/blocks/Cinder-Syphon/src/syphonClient.h"; sourceTree = "<group>"; };
 		63755B6141644906AD687EC2 /* OscPrintReceivedElements.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = OscPrintReceivedElements.cpp; path = ../../cinder_dev/blocks/OSC/src/osc/OscPrintReceivedElements.cpp; sourceTree = "<group>"; };
 		6597887DCB8A4AE495141667 /* OscPrintReceivedElements.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = OscPrintReceivedElements.h; path = ../../cinder_dev/blocks/OSC/src/osc/OscPrintReceivedElements.h; sourceTree = "<group>"; };
+		6674B8BA186999CD00D8578E /* shdrDbgV.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = shdrDbgV.glsl; path = ../resources/shdrDbgV.glsl; sourceTree = "<group>"; };
+		6674B8BC186999ED00D8578E /* shdrDbgF.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = shdrDbgF.glsl; path = ../resources/shdrDbgF.glsl; sourceTree = "<group>"; };
 		66F7F8A2186881A10016431D /* point.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = point.png; path = ../resources/point.png; sourceTree = "<group>"; };
 		66F7F8A4186884490016431D /* shdrPosF.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = shdrPosF.glsl; path = ../resources/shdrPosF.glsl; sourceTree = "<group>"; };
 		66F7F8A5186884490016431D /* shdrPosV.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = shdrPosV.glsl; path = ../resources/shdrPosV.glsl; sourceTree = "<group>"; };
@@ -250,6 +254,8 @@
 				66F7F8A2186881A10016431D /* point.png */,
 				240869F66A6A4080A6FF0B7C /* CinderApp.icns */,
 				EFC129DC8EB2481182412C2D /* Info.plist */,
+				6674B8BA186999CD00D8578E /* shdrDbgV.glsl */,
+				6674B8BC186999ED00D8578E /* shdrDbgF.glsl */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -386,8 +392,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				66F7F8A3186881A10016431D /* point.png in Resources */,
+				6674B8BD186999ED00D8578E /* shdrDbgF.glsl in Resources */,
 				66F7F8AA186884490016431D /* shdrVelF.glsl in Resources */,
 				66F7F8A8186884490016431D /* shdrPosF.glsl in Resources */,
+				6674B8BB186999CD00D8578E /* shdrDbgV.glsl in Resources */,
 				66F7F8A9186884490016431D /* shdrPosV.glsl in Resources */,
 				D807F138129C45CE88DEFD8C /* CinderApp.icns in Resources */,
 				66F7F8AB186884490016431D /* shdrVelV.glsl in Resources */,

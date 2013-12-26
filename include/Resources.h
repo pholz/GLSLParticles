@@ -10,3 +10,6 @@
 #define VEL_VS                        CINDER_RESOURCE( ../resources/, shdrVelV.glsl, 132, GLSL )
 #define VEL_FS                        CINDER_RESOURCE( ../resources/, shdrVelF.glsl, 133, GLSL )
 
+#define DBG_VS                        CINDER_RESOURCE( ../resources/, shdrDbgV.glsl, 134, GLSL )
+#define DBG_FS                        CINDER_RESOURCE( ../resources/, shdrDbgF.glsl, 135, GLSL )
+

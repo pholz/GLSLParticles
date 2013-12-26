@@ -14,6 +14,8 @@
 #include "cinder/gl/Vbo.h"
 #include "cinder/gl/GlslProg.h"
 
+#include "cinderSyphon.h"
+
 #include "Resources.h"
 
 using namespace ci;
@@ -22,7 +24,7 @@ using namespace std;
 
 #define WIDTH 512
 #define HEIGHT 512
-#define PARTICLES 600
+#define PARTICLES 400
 
 class ShdrPartsApp : public AppNative
 {
@@ -53,9 +55,11 @@ private:
 	
 	gl::VboMesh m_vbo;
 	gl::Fbo m_fbo[2];
+	gl::Fbo m_fboSy;
 	
 	gl::GlslProg m_shdrPos;
 	gl::GlslProg m_shdrVel;
+	gl::GlslProg m_shdrDbg;
 	
 	gl::Texture m_texPos;
 	gl::Texture m_texVel;
@@ -63,7 +67,7 @@ private:
 	gl::Texture m_texNoise;
 	gl::Texture m_texSprite;
 	
-	
+	syphonClient m_clientSyphon; //our syphon client
 };
 
 void ShdrPartsApp::initFbo()
@@ -119,6 +123,7 @@ void ShdrPartsApp::setup()
 	try {
 		m_shdrPos = gl::GlslProg(ci::app::loadResource(POS_VS), ci::app::loadResource(POS_FS));
 		m_shdrVel = gl::GlslProg(ci::app::loadResource(VEL_VS), ci::app::loadResource(VEL_FS));
+		m_shdrDbg = gl::GlslProg(ci::app::loadResource(DBG_VS), ci::app::loadResource(DBG_FS));
 	}
 	catch( gl::GlslProgCompileExc &exc ) {
 		std::cout << "Shader compile error: " << std::endl;
@@ -150,7 +155,7 @@ void ShdrPartsApp::setup()
 		{
 		
 			m_vertPos = Vec3f(Rand::randFloat(winW) / winW, Rand::randFloat(winH) / winH, .0f);
-			Vec2f vel(Rand::randFloat(-.005f, .005f), Rand::randFloat(-.005f, .005f));
+			
 			
 			float nX = iter.x() * .005f;
 			float nY = iter.y() * .005f;
@@ -158,11 +163,12 @@ void ShdrPartsApp::setup()
 			Vec3f v(nX, nY, nZ);
 			float noise = m_perlin.fBm(v);
 			float angle = noise * 15.0f;
+			Vec2f vel(Rand::randFloat(-.0005f, .0005f), Rand::randFloat(-.0005f, .0005f));
 			
 			noiseSurf.setPixel(iter.getPos(),
-				Color(cos(angle) * Rand::randFloat(.00005f,.0002f),
+				ColorA(cos(angle) * Rand::randFloat(.00005f,.0002f),
 					  sin(angle) * Rand::randFloat(.00005f,.0002f),
-					  0.0f ));
+					  0.0f, 1.0f ));
 			
 			posSurf.setPixel(iter.getPos(),
 				ColorA(m_vertPos.x, m_vertPos.y, m_vertPos.z, Rand::randFloat(.00005f, .0002f)));
@@ -173,9 +179,9 @@ void ShdrPartsApp::setup()
 	}
 	
 	gl::Texture::Format tFormat;
-	tFormat.setInternalFormat(GL_RGBA16F_ARB);
+	//tFormat.setInternalFormat(GL_RGBA16F_ARB);
 	gl::Texture::Format tFormatSmall;
-	tFormatSmall.setInternalFormat(GL_RGBA8);
+	//tFormat.setInternalFormat(GL_RGBA8);
 	
 	m_texSprite = gl::Texture(loadImage(loadResource("point.png")), tFormatSmall);
 	
@@ -212,6 +218,8 @@ void ShdrPartsApp::setup()
 	
 	m_fbo[1] = gl::Fbo(PARTICLES, PARTICLES, format);
 	
+	m_fboSy = gl::Fbo(PARTICLES, PARTICLES, format);
+	
 	initFbo();
 	
 	vector<Vec2f> texCoords;
@@ -237,6 +245,14 @@ void ShdrPartsApp::setup()
 	
 	m_vbo.bufferIndices(indices);
 	m_vbo.bufferTexCoords2d(0, texCoords);
+	
+	m_clientSyphon.setup();
+    
+	// in order for this to work, you must run simple server which is a syphon test application
+    // feel free to change the app and server name for your specific case
+    m_clientSyphon.set("syfft", "Max");
+    
+    m_clientSyphon.bind();
 	
 }
 
@@ -275,6 +291,12 @@ void ShdrPartsApp::update()
 	m_fbo[m_bufferOut].bindTexture(2, 2);
 	m_texVel.bind(3);
 	m_texPos.bind(4);
+	
+	m_clientSyphon.bind();
+	
+	gl::TextureRef sytex = m_clientSyphon.getTexture();
+	sytex->bind(6);
+	
 	m_texNoise.bind(5);
 	
 	m_shdrVel.bind();
@@ -284,6 +306,7 @@ void ShdrPartsApp::update()
 	m_shdrVel.uniform("oVelocities", 3);
 	m_shdrVel.uniform("oPositions", 4);
 	m_shdrVel.uniform("texNoise", 5);
+	m_shdrVel.uniform("texNoise2", 6);
 	
 	glBegin(GL_QUADS);
 	glTexCoord2f( 0.0f, 0.0f); glVertex2f( 0.0f, 0.0f);
@@ -296,48 +319,150 @@ void ShdrPartsApp::update()
 	m_fbo[m_bufferOut].unbindTexture();
 	m_texVel.unbind();
 	m_texPos.unbind();
+	m_texNoise.unbind();
 	m_fbo[m_bufferIn].unbindFramebuffer();
+	sytex->unbind();
+	
+	m_clientSyphon.unbind();
 	
 	m_bufferIn = (m_bufferIn + 1) % 2;
 	m_bufferOut = (m_bufferIn + 1) % 2;
+	
+//	m_fboSy.bindFramebuffer();
+//	gl::setMatricesWindow(m_fboSy.getSize());
+//	gl::setViewport(m_fboSy.getBounds());
+//	glDrawBuffer(GL_COLOR_ATTACHMENT0_EXT);
+//	gl::TextureRef sytex2 = m_clientSyphon.getTexture();
+//	gl::pushMatrices();
+//	gl::draw(sytex2, Rectf(0.0, 0.0, m_fboSy.getHeight(), m_fboSy.getHeight()));
+//	gl::popMatrices();
+//
+//	m_fboSy.unbindFramebuffer();
 }
 
 void ShdrPartsApp::draw()
 {
-	gl::setMatricesWindow(getWindowSize());
-	gl::setViewport(getWindowBounds());
-	gl::clear(ColorA(.0f, .0f, .0f, 1.0f));
-	gl::enableAlphaBlending();
-	gl::disableDepthRead();
-	glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
+		
+	if (m_drawTextures)
+	{
+#if 0
+		gl::setMatricesWindow(getWindowSize());
+		gl::setViewport(getWindowBounds());
+		gl::enableAlphaBlending();
+		gl::disableDepthRead();
+		gl::clear(ColorA(.0f, .0f, .0f, 1.0f));
+		gl::color(ColorA(1.f, 1.f, 1.f, 1.f));
+
+		gl::pushMatrices();
+//		gl::scale(getWindowHeight() / (float)PARTICLES, getWindowHeight()/(float)PARTICLES, 1.0f);
+
+		
+//		m_fbo[m_bufferIn].bindTexture(0, 0);
+
+		m_texNoise.bind(1);
+		gl::TextureRef sytex = m_clientSyphon.getTexture();
+		m_clientSyphon.bind();
+//		err = glGetError(); console() << "glerr 0: " << err;
+		sytex->bind(0);
+		
+		m_shdrDbg.bind();
+		m_shdrDbg.uniform("dbgPos", 1);
+		m_shdrDbg.uniform("dbgSy", 0);
+		m_shdrDbg.uniform("scale", (float)PARTICLES);
+		
+	//	gl::draw(m_vbo);
+
+		gl::drawSolidRect(Rectf(0.f, 0.f, getWindowHeight(), getWindowHeight()));
+		gl::popMatrices();
+		
+		m_shdrDbg.unbind();
+		sytex->unbind();
+		m_clientSyphon.unbind();
+		m_fbo[m_bufferIn].unbindTexture();
+		
+#endif
+		
+#if 1
+//		m_clientSyphon.draw(0.0, 0.0, getWindowWidth(), getWindowHeight());
+		gl::setMatricesWindow(getWindowSize());
+		gl::setViewport(getWindowBounds());
+		gl::enableAlphaBlending();
+		gl::disableDepthRead();
+		gl::clear(ColorA(.0f, .0f, .0f, 1.0f));
+		gl::color(ColorA(1.f, 1.f, 1.f, 1.f));
+		
+		int err;
+		
+		m_clientSyphon.bind();
+		gl::TextureRef sytex = m_clientSyphon.getTexture();
+		sytex->bind(0);
+		
+		m_shdrDbg.bind();
+		m_shdrDbg.uniform("dbgSy", 0);
+		
+		gl::pushMatrices();
+		gl::draw(sytex, Rectf(0.0, 0.0, getWindowHeight(), getWindowHeight()));
+		
+//		glBegin(GL_QUADS);
+//		glTexCoord2f( 0.0f, 0.0f); glVertex2f( 0.0f, 0.0f);
+//		glTexCoord2f( 0.0f, 1.0f); glVertex2f( 0.0f, getWindowHeight());
+//		glTexCoord2f( 1.0f, 1.0f); glVertex2f( getWindowHeight(), getWindowHeight());
+//		glTexCoord2f( 1.0f, 0.0f); glVertex2f( getWindowHeight(), 0.0f);
+//		glEnd();
+
+		gl::popMatrices();
+		
+		sytex->unbind();
+		m_clientSyphon.unbind();
+		m_shdrDbg.unbind();
+
+		
+#endif
+		
+	}
+	else
+	{
+		gl::setMatricesWindow(getWindowSize());
+		gl::setViewport(getWindowBounds());
+		gl::clear(ColorA(.0f, .0f, .0f, 1.0f));
+		gl::enableAlphaBlending();
+		gl::disableDepthRead();
+
+		glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
+		
+		m_fbo[m_bufferIn].bindTexture(0, 0);
+		m_fbo[m_bufferIn].bindTexture(1, 1);
+		m_fbo[m_bufferIn].bindTexture(2, 2);
+		
+		m_texSprite.bind(3);
+		
+		
+		
+		m_shdrPos.bind();
+		m_shdrPos.uniform("texPos", 0);
+		m_shdrPos.uniform("texVel", 1);
+		m_shdrPos.uniform("texInf", 2);
+		m_shdrPos.uniform("texSprite", 3);
+		m_shdrPos.uniform("texSy", 4);
+		m_shdrPos.uniform("scale", (float)PARTICLES);
+		
+		gl::color(ColorA(1.f, 1.f, 1.f, 1.f));
+		gl::pushMatrices();
+		
+		gl::scale(getWindowHeight() / (float)PARTICLES, getWindowHeight()/(float)PARTICLES, 1.0f);
+		
+		gl::draw(m_vbo);
+		
+		gl::popMatrices();
+		
+		m_shdrPos.unbind();
+		m_texSprite.unbind();
+		m_fbo[m_bufferIn].unbindTexture();
+
+		gl::disableAlphaBlending();
 	
-	m_fbo[m_bufferIn].bindTexture(0, 0);
-	m_fbo[m_bufferIn].bindTexture(1, 1);
-	m_fbo[m_bufferIn].bindTexture(2, 2);
-	
-	m_texSprite.bind(3);
-	
-	m_shdrPos.bind();
-	m_shdrPos.uniform("texPos", 0);
-	m_shdrPos.uniform("texVel", 1);
-	m_shdrPos.uniform("texInf", 2);
-	m_shdrPos.uniform("texSprite", 3);
-	m_shdrPos.uniform("scale", (float)PARTICLES);
-	
-	gl::color(ColorA(1.f, 1.f, 1.f, 1.f));
-	gl::pushMatrices();
-	
-	gl::scale(getWindowHeight() / (float)PARTICLES, getWindowHeight()/(float)PARTICLES, 1.0f);
-	
-	gl::draw(m_vbo);
-	
-	gl::popMatrices();
-	
-	m_shdrPos.unbind();
-	m_texSprite.unbind();
-	m_fbo[m_bufferIn].unbindTexture();
-	gl::disableAlphaBlending();
-	
+	}
+		
 	drawText();
 	
 }

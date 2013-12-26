@@ -4,7 +4,7 @@ uniform sampler2D texPos;
 uniform sampler2D texVel;
 uniform sampler2D texInf;
 
-uniform sampler2D texSprite;
+
 
 varying float age;
 
@@ -14,7 +14,9 @@ void main()
   //  colFac.rgb *= texture2D( texPos, gl_TexCoord[0].st ).rgb;
 	
 	//    colFac.a *= .35;
-	colFac.a *= age;
+	colFac.a *= (1.0-age);
+	
+//	colFac.r = texture2D(texSy, gl_TexCoord[0].st).r;
     
 	gl_FragColor = colFac;
 }
