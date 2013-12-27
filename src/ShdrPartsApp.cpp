@@ -18,6 +18,8 @@
 
 #include "Resources.h"
 
+#include "OscListener.h"
+
 using namespace ci;
 using namespace ci::app;
 using namespace std;
@@ -68,6 +70,10 @@ private:
 	gl::Texture m_texSprite;
 	
 	syphonClient m_clientSyphon; //our syphon client
+	
+	osc::Listener m_listener;
+	
+	float m_parts_speed;
 };
 
 void ShdrPartsApp::initFbo()
@@ -257,6 +263,11 @@ void ShdrPartsApp::setup()
     
     m_clientSyphon.bind();
 	
+	
+	m_listener.setup(5999);
+	
+	m_parts_speed = .0f;
+	
 }
 
 void ShdrPartsApp::mouseDown( MouseEvent event )
@@ -282,6 +293,54 @@ void ShdrPartsApp::keyDown( KeyEvent event)
 
 void ShdrPartsApp::update()
 {
+	
+	// OSC
+	
+	while( m_listener.hasWaitingMessages() )
+	{
+		osc::Message message;
+		m_listener.getNextMessage( &message );
+		
+		console() << "New message received" << std::endl;
+		console() << "Address: " << message.getAddress() << std::endl;
+		console() << "Num Arg: " << message.getNumArgs() << std::endl;
+		for (int i = 0; i < message.getNumArgs(); i++) {
+			console() << "-- Argument " << i << std::endl;
+			console() << "---- type: " << message.getArgTypeName(i) << std::endl;
+			if( message.getArgType(i) == osc::TYPE_INT32 ) {
+				try {
+					console() << "------ value: "<< message.getArgAsInt32(i) << std::endl;
+				}
+				catch (...) {
+					console() << "Exception reading argument as int32" << std::endl;
+				}
+			}
+			else if( message.getArgType(i) == osc::TYPE_FLOAT ) {
+				try {
+					//console() << "------ value: " << message.getArgAsFloat(i) << std::endl;
+					
+					if (message.getAddress().compare("/FromVDMX/parts_speed") == 0)
+					{
+						m_parts_speed = message.getArgAsFloat(i);
+					}
+				}
+				catch (...) {
+					console() << "Exception reading argument as float" << std::endl;
+				}
+			}
+			else if( message.getArgType(i) == osc::TYPE_STRING) {
+				try {
+					console() << "------ value: " << message.getArgAsString(i).c_str() << std::endl;
+				}
+				catch (...) {
+					console() << "Exception reading argument as string" << std::endl;
+				}
+			}
+		}
+	}
+	
+	///////
+	
 	m_fbo[m_bufferIn].bindFramebuffer();
 	
 	gl::setMatricesWindow(m_fbo[0].getSize());
@@ -310,7 +369,7 @@ void ShdrPartsApp::update()
 	m_shdrVel.uniform("oPositions", 4);
 	m_shdrVel.uniform("texNoise", 5);
 	m_shdrVel.uniform("texNoise2", 6);
-	m_shdrVel.uniform("time", (float) this->getElapsedSeconds());
+	m_shdrVel.uniform("time", m_parts_speed);
 	
 	glBegin(GL_QUADS);
 	glTexCoord2f( 0.0f, 0.0f); glVertex2f( 0.0f, 0.0f);
