@@ -68,8 +68,10 @@ private:
 	gl::Texture m_texInfo;
 	gl::Texture m_texNoise;
 	gl::Texture m_texSprite;
+	gl::TextureRef m_texSyRef;
 	
 	syphonClient m_clientSyphon; //our syphon client
+	syphonServer m_srvSyphon;
 	
 	osc::Listener m_listener;
 	
@@ -227,7 +229,7 @@ void ShdrPartsApp::setup()
 	
 	m_fbo[1] = gl::Fbo(PARTICLES, PARTICLES, format);
 	
-	m_fboSy = gl::Fbo(PARTICLES, PARTICLES, format);
+	m_fboSy = gl::Fbo(1024, 1024, format);
 	
 	initFbo();
 	
@@ -263,10 +265,14 @@ void ShdrPartsApp::setup()
     
     m_clientSyphon.bind();
 	
+	m_srvSyphon.setName("parts");
 	
-	m_listener.setup(5999);
+	
+	m_listener.setup(5991);
 	
 	m_parts_speed = .0f;
+	
+	m_texSyRef = gl::Texture::create(1024, 1024);
 	
 }
 
@@ -487,8 +493,17 @@ void ShdrPartsApp::draw()
 	}
 	else
 	{
-		gl::setMatricesWindow(getWindowSize());
-		gl::setViewport(getWindowBounds());
+		m_fboSy.bindFramebuffer();
+		gl::setMatricesWindow(m_fboSy.getSize());
+		gl::setViewport(m_fboSy.getBounds());
+//		glDrawBuffer(GL_COLOR_ATTACHMENT0_EXT);
+		GLenum bfrs[1] = {GL_COLOR_ATTACHMENT0_EXT};
+		glDrawBuffers(1, bfrs);
+		
+		
+//		gl::setMatricesWindow(getWindowSize());
+//		gl::setViewport(getWindowBounds());
+		
 		gl::clear(ColorA(.0f, .0f, .0f, 1.0f));
 		gl::enableAlphaBlending();
 		glBlendFunc(GL_ONE, GL_ONE);
@@ -515,7 +530,8 @@ void ShdrPartsApp::draw()
 		gl::color(ColorA(1.f, 1.f, 1.f, 1.f));
 		gl::pushMatrices();
 		
-		gl::scale(getWindowHeight() / (float)PARTICLES, getWindowHeight()/(float)PARTICLES, 1.0f);
+//		gl::scale(getWindowHeight() / (float)PARTICLES, getWindowHeight()/(float)PARTICLES, 1.0f);
+		gl::scale(1024.0 / (float)PARTICLES, 1024.0/(float)PARTICLES, 1.0f);
 		
 		gl::draw(m_vbo);
 		
@@ -526,10 +542,25 @@ void ShdrPartsApp::draw()
 		m_fbo[m_bufferIn].unbindTexture();
 
 		gl::disableAlphaBlending();
+		
+		
+		m_fboSy.unbindFramebuffer();
+//		gl::draw(m_fboSy.getTexture());
+		
+		
+		*m_texSyRef = m_fboSy.getTexture();
+		//gl::draw(ref);
+		
+		m_srvSyphon.publishTexture(m_texSyRef);
+		
+//		m_srvSyphon.publishScreen();
 	
 	}
 		
-	drawText();
+//	drawText();
+	
+	if (getElapsedFrames() % 60 == 0)
+		console() << "FPS: " << getAverageFps() << std::endl;
 	
 }
 
@@ -537,6 +568,7 @@ void ShdrPartsApp::prepareSettings(Settings *settings)
 {
 	settings->setWindowSize(WIDTH,HEIGHT);
     settings->setFrameRate(60.0f);
+	
 }
 
 void ShdrPartsApp::drawText()
