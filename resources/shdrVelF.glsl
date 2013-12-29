@@ -25,11 +25,11 @@ void main()
 	float maxAge =	texture2D( information, texCoord.st).g;
     //vec2 noise =	texture2D( texNoise,	pos.xy).rg;
 	
-	vec2 noise = vec2(0.001 * texture2DRect(texNoise2, vec2(pos.x*400.0, 400.0-pos.y*400.0)).r, 0.001 * texture2DRect(texNoise2, vec2(pos.x*400.0, 400.0-pos.y*400.0)).g);
+	vec2 noise = 0.001 * (texture2DRect(texNoise2, vec2(pos.x*400.0, 400.0-pos.y*400.0)).rg - vec2(0.5));
     
     age += tStep;
     
-	vel += vec3(noise.x,noise.y,0.0) * sin(time);
+	vel += vec3(noise.x,noise.y,0.0) * time;
     
     pos.x += vel.x;
     pos.y += vel.y;

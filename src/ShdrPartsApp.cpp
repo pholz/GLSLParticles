@@ -26,7 +26,7 @@ using namespace std;
 
 #define WIDTH 512
 #define HEIGHT 512
-#define PARTICLES 200
+#define PARTICLES 300
 
 class ShdrPartsApp : public AppNative
 {
@@ -307,18 +307,18 @@ void ShdrPartsApp::update()
 		osc::Message message;
 		m_listener.getNextMessage( &message );
 		
-		console() << "New message received" << std::endl;
-		console() << "Address: " << message.getAddress() << std::endl;
-		console() << "Num Arg: " << message.getNumArgs() << std::endl;
+//		console() << "New message received" << std::endl;
+//		console() << "Address: " << message.getAddress() << std::endl;
+//		console() << "Num Arg: " << message.getNumArgs() << std::endl;
 		for (int i = 0; i < message.getNumArgs(); i++) {
-			console() << "-- Argument " << i << std::endl;
-			console() << "---- type: " << message.getArgTypeName(i) << std::endl;
+//			console() << "-- Argument " << i << std::endl;
+//			console() << "---- type: " << message.getArgTypeName(i) << std::endl;
 			if( message.getArgType(i) == osc::TYPE_INT32 ) {
 				try {
-					console() << "------ value: "<< message.getArgAsInt32(i) << std::endl;
+//					console() << "------ value: "<< message.getArgAsInt32(i) << std::endl;
 				}
 				catch (...) {
-					console() << "Exception reading argument as int32" << std::endl;
+//					console() << "Exception reading argument as int32" << std::endl;
 				}
 			}
 			else if( message.getArgType(i) == osc::TYPE_FLOAT ) {
@@ -331,15 +331,15 @@ void ShdrPartsApp::update()
 					}
 				}
 				catch (...) {
-					console() << "Exception reading argument as float" << std::endl;
+//					console() << "Exception reading argument as float" << std::endl;
 				}
 			}
 			else if( message.getArgType(i) == osc::TYPE_STRING) {
 				try {
-					console() << "------ value: " << message.getArgAsString(i).c_str() << std::endl;
+//					console() << "------ value: " << message.getArgAsString(i).c_str() << std::endl;
 				}
 				catch (...) {
-					console() << "Exception reading argument as string" << std::endl;
+//					console() << "Exception reading argument as string" << std::endl;
 				}
 			}
 		}
@@ -567,7 +567,7 @@ void ShdrPartsApp::draw()
 void ShdrPartsApp::prepareSettings(Settings *settings)
 {
 	settings->setWindowSize(WIDTH,HEIGHT);
-    settings->setFrameRate(60.0f);
+    settings->setFrameRate(30.0f);
 	
 }
 
