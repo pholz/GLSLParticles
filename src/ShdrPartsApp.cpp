@@ -20,13 +20,18 @@
 
 #include "OscListener.h"
 
+#include "CinderFreenect.h"
+
 using namespace ci;
 using namespace ci::app;
 using namespace std;
 
 #define WIDTH 512
 #define HEIGHT 512
-#define PARTICLES 300
+#define PARTICLES 256
+
+#define SYWIDTH 1280
+#define SYHEIGHT 720
 
 class ShdrPartsApp : public AppNative
 {
@@ -76,6 +81,10 @@ private:
 	osc::Listener m_listener;
 	
 	float m_parts_speed;
+	float m_parts_size;
+	
+	KinectRef		m_kinect;
+	gl::Texture m_depthTex;
 };
 
 void ShdrPartsApp::initFbo()
@@ -188,13 +197,13 @@ void ShdrPartsApp::setup()
 	
 	gl::Texture::Format tFormat;
 	
-	//tFormat.setInternalFormat(GL_RGBA16F_ARB);
+//	tFormat.setInternalFormat(GL_RGBA16F_ARB);
 	gl::Texture::Format tFormatSmall;
-	//tFormat.setInternalFormat(GL_RGBA8);
+//	tFormat.setInternalFormat(GL_RGBA8);
 	
 	m_texSprite = gl::Texture(loadImage(loadResource("cross.png")), tFormatSmall);
 	
-	GLenum interp = GL_LINEAR;
+	GLenum interp = GL_NEAREST;
 	
 	m_texNoise = gl::Texture(noiseSurf, tFormatSmall);
 	m_texNoise.setWrap(GL_REPEAT, GL_REPEAT);
@@ -224,12 +233,20 @@ void ShdrPartsApp::setup()
 	format.setWrap(GL_CLAMP, GL_CLAMP);
 	format.setColorInternalFormat(GL_RGBA16F_ARB);
 	
+	gl::Fbo::Format format2;
+	format2.enableDepthBuffer(false);
+	format2.enableColorBuffer(true, 1);
+	format2.setMinFilter(GL_LINEAR);
+	format2.setMagFilter(GL_LINEAR);
+	format2.setWrap(GL_CLAMP, GL_CLAMP);
+	format2.setColorInternalFormat(GL_RGBA16F_ARB);
+	
 	
 	m_fbo[0] = gl::Fbo(PARTICLES, PARTICLES, format);
 	
 	m_fbo[1] = gl::Fbo(PARTICLES, PARTICLES, format);
 	
-	m_fboSy = gl::Fbo(1024, 1024, format);
+	m_fboSy = gl::Fbo(SYWIDTH, SYHEIGHT, format2);
 	
 	initFbo();
 	
@@ -272,7 +289,14 @@ void ShdrPartsApp::setup()
 	
 	m_parts_speed = .0f;
 	
-	m_texSyRef = gl::Texture::create(1024, 1024);
+	m_texSyRef = gl::Texture::create(SYWIDTH, SYHEIGHT);
+	
+	console() << "There are " << Kinect::getNumDevices() << " Kinects connected." << std::endl;
+	
+	m_kinect = Kinect::create();
+	
+	m_parts_speed = 0.1;
+	m_parts_size = 1.0;
 	
 }
 
@@ -329,6 +353,10 @@ void ShdrPartsApp::update()
 					{
 						m_parts_speed = message.getArgAsFloat(i);
 					}
+					else if (message.getAddress().compare("/FromVDMX/parts_size") == 0)
+					{
+						m_parts_size = message.getArgAsFloat(i);
+					}
 				}
 				catch (...) {
 //					console() << "Exception reading argument as float" << std::endl;
@@ -347,6 +375,11 @@ void ShdrPartsApp::update()
 	
 	///////
 	
+	if (m_kinect->checkNewDepthFrame())
+		m_depthTex = m_kinect->getDepthImage();
+	
+	///////
+	
 	m_fbo[m_bufferIn].bindFramebuffer();
 	
 	gl::setMatricesWindow(m_fbo[0].getSize());
@@ -360,10 +393,15 @@ void ShdrPartsApp::update()
 	m_texVel.bind(3);
 	m_texPos.bind(4);
 	
-	m_clientSyphon.bind();
+//	m_clientSyphon.bind();
 	
-	gl::TextureRef sytex = m_clientSyphon.getTexture();
-	sytex->bind(6);
+//	gl::TextureRef sytex = m_clientSyphon.getTexture();
+//	sytex->bind(6);
+	
+	if (m_depthTex)
+		m_depthTex.bind(6);
+	else
+		m_texNoise.bind(6);
 	
 	m_texNoise.bind(5);
 	
@@ -390,9 +428,11 @@ void ShdrPartsApp::update()
 	m_texPos.unbind();
 	m_texNoise.unbind();
 	m_fbo[m_bufferIn].unbindFramebuffer();
-	sytex->unbind();
+//	sytex->unbind();
+	if (m_depthTex)
+		m_depthTex.unbind();
 	
-	m_clientSyphon.unbind();
+//	m_clientSyphon.unbind();
 	
 	m_bufferIn = (m_bufferIn + 1) % 2;
 	m_bufferOut = (m_bufferIn + 1) % 2;
@@ -458,6 +498,7 @@ void ShdrPartsApp::draw()
 		gl::setMatricesWindow(getWindowSize());
 		gl::setViewport(getWindowBounds());
 		gl::enableAlphaBlending();
+		
 		gl::disableDepthRead();
 		gl::clear(ColorA(.0f, .0f, .0f, 1.0f));
 		gl::color(ColorA(1.f, 1.f, 1.f, 1.f));
@@ -486,6 +527,15 @@ void ShdrPartsApp::draw()
 		sytex->unbind();
 		m_clientSyphon.unbind();
 		m_shdrDbg.unbind();
+		
+		// kinect
+		
+//		if (m_depthTex)
+//		{
+//			gl::draw(m_depthTex);
+//		}
+		
+//		gl::draw(m_fbo[0].getTexture());
 
 		
 #endif
@@ -506,8 +556,10 @@ void ShdrPartsApp::draw()
 		
 		gl::clear(ColorA(.0f, .0f, .0f, 1.0f));
 		gl::enableAlphaBlending();
-		glBlendFunc(GL_ONE, GL_ONE);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+//		gl::disableAlphaBlending();
 		gl::disableDepthRead();
+//		glDisable(GL_DEPTH_TEST);
 
 		glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
 		
@@ -526,12 +578,13 @@ void ShdrPartsApp::draw()
 		m_shdrPos.uniform("texSprite", 3);
 		m_shdrPos.uniform("texSy", 4);
 		m_shdrPos.uniform("scale", (float)PARTICLES);
+		m_shdrPos.uniform("partSize", m_parts_size);
 		
 		gl::color(ColorA(1.f, 1.f, 1.f, 1.f));
 		gl::pushMatrices();
 		
 //		gl::scale(getWindowHeight() / (float)PARTICLES, getWindowHeight()/(float)PARTICLES, 1.0f);
-		gl::scale(1024.0 / (float)PARTICLES, 1024.0/(float)PARTICLES, 1.0f);
+		gl::scale((float)SYWIDTH / (float)PARTICLES, (float)SYHEIGHT/(float)PARTICLES, 1.0f);
 		
 		gl::draw(m_vbo);
 		

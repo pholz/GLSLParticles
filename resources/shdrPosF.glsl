@@ -17,11 +17,11 @@ void main()
 	
 //	vec4 colFac = vec4(gl_PointCoord.s , gl_PointCoord.t, 0.0, 1.0);
 	
+//	float rage = clamp(age, 0.0, 1.0);
 	
-	
-	colFac.a *= (1.0-age);
+	colFac.a *= 1.0-age;
 	colFac.g *= 1.0-age;
-	colFac.r *= sin(age*10.0)*0.5 + 0.5;
+	colFac.r *= sin(age*12.56)*0.5 + 0.5;
 	colFac.b *= sqrt(1.0-age);
 //	colFac.a *= 0.6;
 	

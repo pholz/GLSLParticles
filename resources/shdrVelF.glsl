@@ -6,7 +6,7 @@ uniform sampler2D information;
 uniform sampler2D oVelocities;
 uniform sampler2D oPositions;
 uniform sampler2D texNoise;
-uniform sampler2DRect texNoise2;
+uniform sampler2D texNoise2;
 
 uniform float time;
 
@@ -25,8 +25,9 @@ void main()
 	float maxAge =	texture2D( information, texCoord.st).g;
     //vec2 noise =	texture2D( texNoise,	pos.xy).rg;
 	
-	vec2 noise = 0.001 * (texture2DRect(texNoise2, vec2(pos.x*400.0, 400.0-pos.y*400.0)).rg - vec2(0.5));
-    
+//	vec2 noise = 0.001 * (texture2DRect(texNoise2, vec2(pos.x*400.0, 400.0-pos.y*400.0)).rg - vec2(0.5));
+    vec2 noise = 0.001 * (texture2D(texNoise2, vec2(pos.x, 1.0-pos.y)).rg - vec2(0.5));
+	
     age += tStep;
     
 	vel += vec3(noise.x,noise.y,0.0) * time;
@@ -34,7 +35,7 @@ void main()
     pos.x += vel.x;
     pos.y += vel.y;
 	
-	if( age >= maxAge )
+	if( age >= 1.0 )
     {
         vec3 origVel = texture2D(oVelocities, texCoord.st).rgb;
         vec3 origPos = texture2D(oPositions, texCoord.st).rgb;

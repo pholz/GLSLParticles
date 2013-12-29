@@ -18,6 +18,13 @@
 		5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
 		5323E6B60EAFCA7E003A9687 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B50EAFCA7E003A9687 /* QTKit.framework */; };
 		653CFD0726554E289A25A541 /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 898958CE978A4F7D82F05800 /* Syphon.framework */; };
+		66665C53187029A900F06B48 /* CinderFreenect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66665C51187029A900F06B48 /* CinderFreenect.cpp */; };
+		66665C59187029BE00F06B48 /* cameras.c in Sources */ = {isa = PBXBuildFile; fileRef = 66665C54187029BE00F06B48 /* cameras.c */; };
+		66665C5A187029BE00F06B48 /* core.c in Sources */ = {isa = PBXBuildFile; fileRef = 66665C55187029BE00F06B48 /* core.c */; };
+		66665C5B187029BE00F06B48 /* registration.c in Sources */ = {isa = PBXBuildFile; fileRef = 66665C56187029BE00F06B48 /* registration.c */; };
+		66665C5C187029BE00F06B48 /* tilt.c in Sources */ = {isa = PBXBuildFile; fileRef = 66665C57187029BE00F06B48 /* tilt.c */; };
+		66665C5D187029BE00F06B48 /* usb_libusb10.c in Sources */ = {isa = PBXBuildFile; fileRef = 66665C58187029BE00F06B48 /* usb_libusb10.c */; };
+		66665C5F18702AA500F06B48 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66665C5E18702AA500F06B48 /* IOKit.framework */; };
 		6674B8BB186999CD00D8578E /* shdrDbgV.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 6674B8BA186999CD00D8578E /* shdrDbgV.glsl */; };
 		6674B8BD186999ED00D8578E /* shdrDbgF.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 6674B8BC186999ED00D8578E /* shdrDbgF.glsl */; };
 		667F7381186CA2C4000B4BA5 /* cross.png in Resources */ = {isa = PBXBuildFile; fileRef = 667F7380186CA2C4000B4BA5 /* cross.png */; };
@@ -84,6 +91,14 @@
 		5B8D519E84324EEE8895AF5D /* syphonClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = syphonClient.h; path = "../../cinder_dev/blocks/Cinder-Syphon/src/syphonClient.h"; sourceTree = "<group>"; };
 		63755B6141644906AD687EC2 /* OscPrintReceivedElements.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = OscPrintReceivedElements.cpp; path = ../../cinder_dev/blocks/OSC/src/osc/OscPrintReceivedElements.cpp; sourceTree = "<group>"; };
 		6597887DCB8A4AE495141667 /* OscPrintReceivedElements.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = OscPrintReceivedElements.h; path = ../../cinder_dev/blocks/OSC/src/osc/OscPrintReceivedElements.h; sourceTree = "<group>"; };
+		66665C51187029A900F06B48 /* CinderFreenect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CinderFreenect.cpp; path = "../../cinder_dev/blocks/Cinder-Kinect/src/CinderFreenect.cpp"; sourceTree = "<group>"; };
+		66665C52187029A900F06B48 /* CinderFreenect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CinderFreenect.h; path = "../../cinder_dev/blocks/Cinder-Kinect/src/CinderFreenect.h"; sourceTree = "<group>"; };
+		66665C54187029BE00F06B48 /* cameras.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cameras.c; path = "../../cinder_dev/blocks/Cinder-Kinect/src/freenect/cameras.c"; sourceTree = "<group>"; };
+		66665C55187029BE00F06B48 /* core.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = core.c; path = "../../cinder_dev/blocks/Cinder-Kinect/src/freenect/core.c"; sourceTree = "<group>"; };
+		66665C56187029BE00F06B48 /* registration.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = registration.c; path = "../../cinder_dev/blocks/Cinder-Kinect/src/freenect/registration.c"; sourceTree = "<group>"; };
+		66665C57187029BE00F06B48 /* tilt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tilt.c; path = "../../cinder_dev/blocks/Cinder-Kinect/src/freenect/tilt.c"; sourceTree = "<group>"; };
+		66665C58187029BE00F06B48 /* usb_libusb10.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = usb_libusb10.c; path = "../../cinder_dev/blocks/Cinder-Kinect/src/freenect/usb_libusb10.c"; sourceTree = "<group>"; };
+		66665C5E18702AA500F06B48 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		6674B8BA186999CD00D8578E /* shdrDbgV.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = shdrDbgV.glsl; path = ../resources/shdrDbgV.glsl; sourceTree = "<group>"; };
 		6674B8BC186999ED00D8578E /* shdrDbgF.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = shdrDbgF.glsl; path = ../resources/shdrDbgF.glsl; sourceTree = "<group>"; };
 		667F7380186CA2C4000B4BA5 /* cross.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cross.png; path = ../resources/cross.png; sourceTree = "<group>"; };
@@ -128,6 +143,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				66665C5F18702AA500F06B48 /* IOKit.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				0091D8F90E81B9330029341E /* OpenGL.framework in Frameworks */,
 				5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */,
@@ -146,6 +162,7 @@
 		01B97315FEAEA392516A2CEA /* Blocks */ = {
 			isa = PBXGroup;
 			children = (
+				66665C4E1870297600F06B48 /* Cinder-Freenect */,
 				88B609B9918D4EBC90F4797D /* Syphon */,
 				212D66DB5C734E618115A031 /* OSC */,
 			);
@@ -266,6 +283,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				66665C5E18702AA500F06B48 /* IOKit.framework */,
 				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
@@ -279,6 +297,36 @@
 				F4F2501810E644429F847527 /* UdpSocket.cpp */,
 			);
 			name = posix;
+			sourceTree = "<group>";
+		};
+		66665C4E1870297600F06B48 /* Cinder-Freenect */ = {
+			isa = PBXGroup;
+			children = (
+				66665C4F1870298C00F06B48 /* src */,
+			);
+			name = "Cinder-Freenect";
+			sourceTree = "<group>";
+		};
+		66665C4F1870298C00F06B48 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				66665C51187029A900F06B48 /* CinderFreenect.cpp */,
+				66665C52187029A900F06B48 /* CinderFreenect.h */,
+				66665C501870299200F06B48 /* freenect */,
+			);
+			name = src;
+			sourceTree = "<group>";
+		};
+		66665C501870299200F06B48 /* freenect */ = {
+			isa = PBXGroup;
+			children = (
+				66665C54187029BE00F06B48 /* cameras.c */,
+				66665C55187029BE00F06B48 /* core.c */,
+				66665C56187029BE00F06B48 /* registration.c */,
+				66665C57187029BE00F06B48 /* tilt.c */,
+				66665C58187029BE00F06B48 /* usb_libusb10.c */,
+			);
+			name = freenect;
 			sourceTree = "<group>";
 		};
 		69411F4DEE9E41FF8C5632D6 /* osc */ = {
@@ -415,19 +463,25 @@
 			files = (
 				711F115A380E4AC0AAE6F89E /* ShdrPartsApp.cpp in Sources */,
 				E132D8EEA93149258193B478 /* syphonClient.mm in Sources */,
+				66665C5D187029BE00F06B48 /* usb_libusb10.c in Sources */,
 				8E66D29602C34690873BFF4D /* syphonServer.mm in Sources */,
 				D690D53AED2B419EB09E61AE /* syphonServerDirectory.mm in Sources */,
 				AB1A4D918BAF4CFCB439D96C /* SyphonNameboundClient.m in Sources */,
 				C3CED40C609449C4A9301788 /* OscBundle.cpp in Sources */,
+				66665C5B187029BE00F06B48 /* registration.c in Sources */,
 				B8AA93629166419681D76A29 /* OscListener.cpp in Sources */,
 				1B690B42B5584F7CA52B17CD /* OscMessage.cpp in Sources */,
 				B6F0D36BBB52444A8964F10A /* OscSender.cpp in Sources */,
+				66665C5C187029BE00F06B48 /* tilt.c in Sources */,
+				66665C5A187029BE00F06B48 /* core.c in Sources */,
 				4A4E17017F1B4F62A6F502E9 /* IpEndpointName.cpp in Sources */,
 				AD031B4F4101472595A70B06 /* OscOutboundPacketStream.cpp in Sources */,
 				ABE38C1D3831430F93099748 /* OscPrintReceivedElements.cpp in Sources */,
+				66665C53187029A900F06B48 /* CinderFreenect.cpp in Sources */,
 				90AEC6CCBF33494CB4685925 /* OscReceivedElements.cpp in Sources */,
 				4E9BFF95197A40FFB06D1DEF /* OscTypes.cpp in Sources */,
 				8F8054DCD15A488CA25B5385 /* NetworkingUtils.cpp in Sources */,
+				66665C59187029BE00F06B48 /* cameras.c in Sources */,
 				F071582068A94B34A879853E /* UdpSocket.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -453,10 +507,18 @@
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					"\"$(CINDER_PATH)/boost\"",
+					"\"$(CINDER_PATH)/blocks/Cinder-Kinect/src/freenect\"",
+				);
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = "\"../../cinder_dev/blocks/Cinder-Kinect/lib/macosx\"";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				OTHER_LDFLAGS = "\"$(CINDER_PATH)/lib/libcinder_d.a\"";
+				OTHER_LDFLAGS = (
+					"\"$(CINDER_PATH)/lib/libcinder_d.a\"",
+					"\"$(CINDER_PATH)/blocks/Cinder-Kinect/lib/macosx/libusb-1.0.a\"",
+				);
 				PRODUCT_NAME = ShdrParts;
 				SYMROOT = ./build;
 				WRAPPER_EXTENSION = app;
@@ -478,10 +540,18 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ShdrParts_Prefix.pch;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					"\"$(CINDER_PATH)/boost\"",
+					"\"$(CINDER_PATH)/blocks/Cinder-Kinect/src/freenect\"",
+				);
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = "\"../../cinder_dev/blocks/Cinder-Kinect/lib/macosx\"";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				OTHER_LDFLAGS = "\"$(CINDER_PATH)/lib/libcinder.a\"";
+				OTHER_LDFLAGS = (
+					"\"$(CINDER_PATH)/lib/libcinder.a\"",
+					"\"$(CINDER_PATH)/blocks/Cinder-Kinect/lib/macosx/libusb-1.0.a\"",
+				);
 				PRODUCT_NAME = ShdrParts;
 				STRIP_INSTALLED_PRODUCT = YES;
 				SYMROOT = ./build;
