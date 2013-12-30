@@ -25,6 +25,7 @@
 		66665C5C187029BE00F06B48 /* tilt.c in Sources */ = {isa = PBXBuildFile; fileRef = 66665C57187029BE00F06B48 /* tilt.c */; };
 		66665C5D187029BE00F06B48 /* usb_libusb10.c in Sources */ = {isa = PBXBuildFile; fileRef = 66665C58187029BE00F06B48 /* usb_libusb10.c */; };
 		66665C5F18702AA500F06B48 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66665C5E18702AA500F06B48 /* IOKit.framework */; };
+		66665C611870AF0100F06B48 /* flakered.png in Resources */ = {isa = PBXBuildFile; fileRef = 66665C601870AF0100F06B48 /* flakered.png */; };
 		6674B8BB186999CD00D8578E /* shdrDbgV.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 6674B8BA186999CD00D8578E /* shdrDbgV.glsl */; };
 		6674B8BD186999ED00D8578E /* shdrDbgF.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 6674B8BC186999ED00D8578E /* shdrDbgF.glsl */; };
 		667F7381186CA2C4000B4BA5 /* cross.png in Resources */ = {isa = PBXBuildFile; fileRef = 667F7380186CA2C4000B4BA5 /* cross.png */; };
@@ -99,6 +100,7 @@
 		66665C57187029BE00F06B48 /* tilt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tilt.c; path = "../../cinder_dev/blocks/Cinder-Kinect/src/freenect/tilt.c"; sourceTree = "<group>"; };
 		66665C58187029BE00F06B48 /* usb_libusb10.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = usb_libusb10.c; path = "../../cinder_dev/blocks/Cinder-Kinect/src/freenect/usb_libusb10.c"; sourceTree = "<group>"; };
 		66665C5E18702AA500F06B48 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+		66665C601870AF0100F06B48 /* flakered.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = flakered.png; path = ../resources/flakered.png; sourceTree = "<group>"; };
 		6674B8BA186999CD00D8578E /* shdrDbgV.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = shdrDbgV.glsl; path = ../resources/shdrDbgV.glsl; sourceTree = "<group>"; };
 		6674B8BC186999ED00D8578E /* shdrDbgF.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = shdrDbgF.glsl; path = ../resources/shdrDbgF.glsl; sourceTree = "<group>"; };
 		667F7380186CA2C4000B4BA5 /* cross.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cross.png; path = ../resources/cross.png; sourceTree = "<group>"; };
@@ -266,6 +268,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				66665C601870AF0100F06B48 /* flakered.png */,
 				667F7380186CA2C4000B4BA5 /* cross.png */,
 				66F7F8A4186884490016431D /* shdrPosF.glsl */,
 				66F7F8A5186884490016431D /* shdrPosV.glsl */,
@@ -447,6 +450,7 @@
 				6674B8BD186999ED00D8578E /* shdrDbgF.glsl in Resources */,
 				66F7F8AA186884490016431D /* shdrVelF.glsl in Resources */,
 				66F7F8A8186884490016431D /* shdrPosF.glsl in Resources */,
+				66665C611870AF0100F06B48 /* flakered.png in Resources */,
 				6674B8BB186999CD00D8578E /* shdrDbgV.glsl in Resources */,
 				66F7F8A9186884490016431D /* shdrPosV.glsl in Resources */,
 				D807F138129C45CE88DEFD8C /* CinderApp.icns in Resources */,

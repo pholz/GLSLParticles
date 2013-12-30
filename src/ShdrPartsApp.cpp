@@ -45,6 +45,7 @@ public:
 	void prepareSettings(Settings *settings);
 	void keyDown(KeyEvent event);
 	void drawText();
+	void loadShaders();
 	
 private:
 	int m_pos;
@@ -133,14 +134,16 @@ void ShdrPartsApp::initFbo()
 	m_texPos.disable();
 }
 
-void ShdrPartsApp::setup()
+void ShdrPartsApp::loadShaders()
 {
-	gl::clear();
-	
 	try {
-		m_shdrPos = gl::GlslProg(ci::app::loadResource(POS_VS), ci::app::loadResource(POS_FS));
-		m_shdrVel = gl::GlslProg(ci::app::loadResource(VEL_VS), ci::app::loadResource(VEL_FS));
+//		m_shdrPos = gl::GlslProg(ci::app::loadResource(POS_VS), ci::app::loadResource(POS_FS));
+//		m_shdrVel = gl::GlslProg(ci::app::loadResource(VEL_VS), ci::app::loadResource(VEL_FS));
+//		m_shdrDbg = gl::GlslProg(ci::app::loadResource(DBG_VS), ci::app::loadResource(DBG_FS));
+		m_shdrPos = gl::GlslProg(loadFile("../../../resources/shdrPosV.glsl"), loadFile("../../../resources/shdrPosF.glsl"));
+		m_shdrVel = gl::GlslProg(loadFile("../../../resources/shdrVelV.glsl"), loadFile("../../../resources/shdrVelF.glsl"));
 		m_shdrDbg = gl::GlslProg(ci::app::loadResource(DBG_VS), ci::app::loadResource(DBG_FS));
+	
 	}
 	catch( gl::GlslProgCompileExc &exc ) {
 		std::cout << "Shader compile error: " << std::endl;
@@ -149,6 +152,13 @@ void ShdrPartsApp::setup()
 	catch( ... ) {
 		std::cout << "Unable to load shader" << std::endl;
 	}
+}
+
+void ShdrPartsApp::setup()
+{
+	gl::clear();
+	
+	loadShaders();
 	
 	m_drawTextures = false;
 	m_isFullScreen = false;
@@ -339,7 +349,12 @@ void ShdrPartsApp::update()
 //			console() << "---- type: " << message.getArgTypeName(i) << std::endl;
 			if( message.getArgType(i) == osc::TYPE_INT32 ) {
 				try {
-//					console() << "------ value: "<< message.getArgAsInt32(i) << std::endl;
+					if (message.getAddress().compare("/FromVDMX/reload_shaders") == 0)
+					{
+						loadShaders();
+						console() << "------ value: "<< message.getArgAsInt32(i) << std::endl;
+					}
+					
 				}
 				catch (...) {
 //					console() << "Exception reading argument as int32" << std::endl;
@@ -530,10 +545,10 @@ void ShdrPartsApp::draw()
 		
 		// kinect
 		
-//		if (m_depthTex)
-//		{
-//			gl::draw(m_depthTex);
-//		}
+		if (m_depthTex)
+		{
+			gl::draw(m_depthTex);
+		}
 		
 //		gl::draw(m_fbo[0].getTexture());
 

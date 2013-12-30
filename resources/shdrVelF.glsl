@@ -26,7 +26,10 @@ void main()
     //vec2 noise =	texture2D( texNoise,	pos.xy).rg;
 	
 //	vec2 noise = 0.001 * (texture2DRect(texNoise2, vec2(pos.x*400.0, 400.0-pos.y*400.0)).rg - vec2(0.5));
-    vec2 noise = 0.001 * (texture2D(texNoise2, vec2(pos.x, 1.0-pos.y)).rg - vec2(0.5));
+	vec2 n2val = (texture2D(texNoise2, vec2(pos.x, 1.0-pos.y)).rg - vec2(0.5));
+//	float r = sqrt(n2val.r*n2val.r + n2val.g+n2val.g);
+//	float phi = atan(n2val.g, n2val.r);
+    vec2 noise = 0.001 * n2val;
 	
     age += tStep;
     
