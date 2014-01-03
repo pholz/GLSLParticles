@@ -18,6 +18,7 @@
 		5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
 		5323E6B60EAFCA7E003A9687 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B50EAFCA7E003A9687 /* QTKit.framework */; };
 		653CFD0726554E289A25A541 /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 898958CE978A4F7D82F05800 /* Syphon.framework */; };
+		6609AC891871A4AA008E8B15 /* cross2.png in Resources */ = {isa = PBXBuildFile; fileRef = 6609AC881871A4AA008E8B15 /* cross2.png */; };
 		66665C53187029A900F06B48 /* CinderFreenect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66665C51187029A900F06B48 /* CinderFreenect.cpp */; };
 		66665C59187029BE00F06B48 /* cameras.c in Sources */ = {isa = PBXBuildFile; fileRef = 66665C54187029BE00F06B48 /* cameras.c */; };
 		66665C5A187029BE00F06B48 /* core.c in Sources */ = {isa = PBXBuildFile; fileRef = 66665C55187029BE00F06B48 /* core.c */; };
@@ -92,6 +93,7 @@
 		5B8D519E84324EEE8895AF5D /* syphonClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = syphonClient.h; path = "../../cinder_dev/blocks/Cinder-Syphon/src/syphonClient.h"; sourceTree = "<group>"; };
 		63755B6141644906AD687EC2 /* OscPrintReceivedElements.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = OscPrintReceivedElements.cpp; path = ../../cinder_dev/blocks/OSC/src/osc/OscPrintReceivedElements.cpp; sourceTree = "<group>"; };
 		6597887DCB8A4AE495141667 /* OscPrintReceivedElements.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = OscPrintReceivedElements.h; path = ../../cinder_dev/blocks/OSC/src/osc/OscPrintReceivedElements.h; sourceTree = "<group>"; };
+		6609AC881871A4AA008E8B15 /* cross2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cross2.png; path = ../resources/cross2.png; sourceTree = "<group>"; };
 		66665C51187029A900F06B48 /* CinderFreenect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CinderFreenect.cpp; path = "../../cinder_dev/blocks/Cinder-Kinect/src/CinderFreenect.cpp"; sourceTree = "<group>"; };
 		66665C52187029A900F06B48 /* CinderFreenect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CinderFreenect.h; path = "../../cinder_dev/blocks/Cinder-Kinect/src/CinderFreenect.h"; sourceTree = "<group>"; };
 		66665C54187029BE00F06B48 /* cameras.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cameras.c; path = "../../cinder_dev/blocks/Cinder-Kinect/src/freenect/cameras.c"; sourceTree = "<group>"; };
@@ -268,6 +270,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				6609AC881871A4AA008E8B15 /* cross2.png */,
 				66665C601870AF0100F06B48 /* flakered.png */,
 				667F7380186CA2C4000B4BA5 /* cross.png */,
 				66F7F8A4186884490016431D /* shdrPosF.glsl */,
@@ -450,6 +453,7 @@
 				6674B8BD186999ED00D8578E /* shdrDbgF.glsl in Resources */,
 				66F7F8AA186884490016431D /* shdrVelF.glsl in Resources */,
 				66F7F8A8186884490016431D /* shdrPosF.glsl in Resources */,
+				6609AC891871A4AA008E8B15 /* cross2.png in Resources */,
 				66665C611870AF0100F06B48 /* flakered.png in Resources */,
 				6674B8BB186999CD00D8578E /* shdrDbgV.glsl in Resources */,
 				66F7F8A9186884490016431D /* shdrPosV.glsl in Resources */,

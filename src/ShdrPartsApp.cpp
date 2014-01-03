@@ -30,8 +30,8 @@ using namespace std;
 #define HEIGHT 512
 #define PARTICLES 256
 
-#define SYWIDTH 1280
-#define SYHEIGHT 720
+#define SYWIDTH 800
+#define SYHEIGHT 600
 
 class ShdrPartsApp : public AppNative
 {
@@ -82,7 +82,10 @@ private:
 	osc::Listener m_listener;
 	
 	float m_parts_speed;
+	float m_parts_direction;
 	float m_parts_size;
+	float m_parts_numparts;
+	float m_parts_rotspeed;
 	
 	KinectRef		m_kinect;
 	gl::Texture m_depthTex;
@@ -211,7 +214,7 @@ void ShdrPartsApp::setup()
 	gl::Texture::Format tFormatSmall;
 //	tFormat.setInternalFormat(GL_RGBA8);
 	
-	m_texSprite = gl::Texture(loadImage(loadResource("cross.png")), tFormatSmall);
+	m_texSprite = gl::Texture(loadImage(loadResource("cross2.png")), tFormatSmall);
 	
 	GLenum interp = GL_NEAREST;
 	
@@ -307,6 +310,9 @@ void ShdrPartsApp::setup()
 	
 	m_parts_speed = 0.1;
 	m_parts_size = 1.0;
+	m_parts_direction = 1.0;
+	m_parts_numparts = 1.0;
+	m_parts_rotspeed = 0.0;
 	
 }
 
@@ -355,6 +361,7 @@ void ShdrPartsApp::update()
 						console() << "------ value: "<< message.getArgAsInt32(i) << std::endl;
 					}
 					
+					
 				}
 				catch (...) {
 //					console() << "Exception reading argument as int32" << std::endl;
@@ -371,6 +378,18 @@ void ShdrPartsApp::update()
 					else if (message.getAddress().compare("/FromVDMX/parts_size") == 0)
 					{
 						m_parts_size = message.getArgAsFloat(i);
+					}
+					else if (message.getAddress().compare("/FromVDMX/parts_direction") == 0)
+					{
+						m_parts_direction = message.getArgAsFloat(i);
+					}
+					else if (message.getAddress().compare("/FromVDMX/parts_rotspeed") == 0)
+					{
+						m_parts_rotspeed = message.getArgAsFloat(i);
+					}
+					else if (message.getAddress().compare("/FromVDMX/parts_numparts") == 0)
+					{
+						m_parts_numparts = message.getArgAsFloat(i);
 					}
 				}
 				catch (...) {
@@ -390,7 +409,7 @@ void ShdrPartsApp::update()
 	
 	///////
 	
-	if (m_kinect->checkNewDepthFrame())
+	if (getElapsedFrames() % 2 == 0 && m_kinect->checkNewDepthFrame())
 		m_depthTex = m_kinect->getDepthImage();
 	
 	///////
@@ -428,7 +447,10 @@ void ShdrPartsApp::update()
 	m_shdrVel.uniform("oPositions", 4);
 	m_shdrVel.uniform("texNoise", 5);
 	m_shdrVel.uniform("texNoise2", 6);
-	m_shdrVel.uniform("time", m_parts_speed);
+	m_shdrVel.uniform("speed", m_parts_speed);
+	m_shdrVel.uniform("direction", m_parts_direction);
+	m_shdrVel.uniform("time", (float)getElapsedSeconds());
+	
 	
 	glBegin(GL_QUADS);
 	glTexCoord2f( 0.0f, 0.0f); glVertex2f( 0.0f, 0.0f);
@@ -594,6 +616,8 @@ void ShdrPartsApp::draw()
 		m_shdrPos.uniform("texSy", 4);
 		m_shdrPos.uniform("scale", (float)PARTICLES);
 		m_shdrPos.uniform("partSize", m_parts_size);
+		m_shdrPos.uniform("numParts", m_parts_numparts);
+		m_shdrPos.uniform("rotSpeed", m_parts_rotspeed);
 		
 		gl::color(ColorA(1.f, 1.f, 1.f, 1.f));
 		gl::pushMatrices();
