@@ -87,7 +87,7 @@ private:
 	float m_parts_numparts;
 	float m_parts_rotspeed;
 	
-	KinectRef		m_kinect;
+	KinectRef m_kinect;
 	gl::Texture m_depthTex;
 };
 
@@ -140,9 +140,6 @@ void ShdrPartsApp::initFbo()
 void ShdrPartsApp::loadShaders()
 {
 	try {
-//		m_shdrPos = gl::GlslProg(ci::app::loadResource(POS_VS), ci::app::loadResource(POS_FS));
-//		m_shdrVel = gl::GlslProg(ci::app::loadResource(VEL_VS), ci::app::loadResource(VEL_FS));
-//		m_shdrDbg = gl::GlslProg(ci::app::loadResource(DBG_VS), ci::app::loadResource(DBG_FS));
 		m_shdrPos = gl::GlslProg(loadFile("../../../resources/shdrPosV.glsl"), loadFile("../../../resources/shdrPosF.glsl"));
 		m_shdrVel = gl::GlslProg(loadFile("../../../resources/shdrVelV.glsl"), loadFile("../../../resources/shdrVelF.glsl"));
 		m_shdrDbg = gl::GlslProg(ci::app::loadResource(DBG_VS), ci::app::loadResource(DBG_FS));
@@ -346,13 +343,9 @@ void ShdrPartsApp::update()
 	{
 		osc::Message message;
 		m_listener.getNextMessage( &message );
-		
-//		console() << "New message received" << std::endl;
-//		console() << "Address: " << message.getAddress() << std::endl;
-//		console() << "Num Arg: " << message.getNumArgs() << std::endl;
-		for (int i = 0; i < message.getNumArgs(); i++) {
-//			console() << "-- Argument " << i << std::endl;
-//			console() << "---- type: " << message.getArgTypeName(i) << std::endl;
+
+		for (int i = 0; i < message.getNumArgs(); i++)
+		{
 			if( message.getArgType(i) == osc::TYPE_INT32 ) {
 				try {
 					if (message.getAddress().compare("/FromVDMX/reload_shaders") == 0)
@@ -364,7 +357,6 @@ void ShdrPartsApp::update()
 					
 				}
 				catch (...) {
-//					console() << "Exception reading argument as int32" << std::endl;
 				}
 			}
 			else if( message.getArgType(i) == osc::TYPE_FLOAT ) {
@@ -393,15 +385,6 @@ void ShdrPartsApp::update()
 					}
 				}
 				catch (...) {
-//					console() << "Exception reading argument as float" << std::endl;
-				}
-			}
-			else if( message.getArgType(i) == osc::TYPE_STRING) {
-				try {
-//					console() << "------ value: " << message.getArgAsString(i).c_str() << std::endl;
-				}
-				catch (...) {
-//					console() << "Exception reading argument as string" << std::endl;
 				}
 			}
 		}
