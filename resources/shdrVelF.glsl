@@ -29,14 +29,13 @@ void main()
 	vec2 coords = vec2(pos.x, 1.0-pos.y);
 	vec2 depthNoise = texture2D(texNoise2, coords).rg - 0.5;
 	depthNoise.r *= direction;
-    vec2 noise = 0.001 * n2val;
-	
-    age += tStep;
-    
+    vec2 noise = 0.001 * depthNoise;
 	vel += vec3(noise.x,noise.y,0.0) * speed;
     
     pos.x += vel.x;
     pos.y += vel.y;
+	
+	age += tStep;
 	
 	if( age >= 1.0 )
     {

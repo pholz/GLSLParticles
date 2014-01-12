@@ -15,17 +15,7 @@ void main()
 	
 	doDiscard = 0.0;
 	
-	
-	
-//	if ( distance(gl_MultiTexCoord0.st, vec2(0.5)) < numParts)
-//		doDiscard = 1.0;
-//	else
-//		doDiscard = 0.0;
-	
 	dv = texture2D( texPos, gl_MultiTexCoord0.st );
-	
-	
-	
     vec3 info = texture2D(texInf, gl_MultiTexCoord0.st).rgb;
 	age = info.r;
 	

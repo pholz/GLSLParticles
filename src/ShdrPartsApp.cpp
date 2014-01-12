@@ -457,16 +457,6 @@ void ShdrPartsApp::update()
 	m_bufferIn = (m_bufferIn + 1) % 2;
 	m_bufferOut = (m_bufferIn + 1) % 2;
 	
-//	m_fboSy.bindFramebuffer();
-//	gl::setMatricesWindow(m_fboSy.getSize());
-//	gl::setViewport(m_fboSy.getBounds());
-//	glDrawBuffer(GL_COLOR_ATTACHMENT0_EXT);
-//	gl::TextureRef sytex2 = m_clientSyphon.getTexture();
-//	gl::pushMatrices();
-//	gl::draw(sytex2, Rectf(0.0, 0.0, m_fboSy.getHeight(), m_fboSy.getHeight()));
-//	gl::popMatrices();
-//
-//	m_fboSy.unbindFramebuffer();
 }
 
 void ShdrPartsApp::draw()
@@ -475,45 +465,6 @@ void ShdrPartsApp::draw()
 		
 	if (m_drawTextures)
 	{
-#if 0
-		gl::setMatricesWindow(getWindowSize());
-		gl::setViewport(getWindowBounds());
-		gl::enableAlphaBlending();
-		
-		gl::disableDepthRead();
-		gl::clear(ColorA(.0f, .0f, .0f, 1.0f));
-		gl::color(ColorA(1.f, 1.f, 1.f, 1.f));
-
-		gl::pushMatrices();
-//		gl::scale(getWindowHeight() / (float)PARTICLES, getWindowHeight()/(float)PARTICLES, 1.0f);
-
-		
-//		m_fbo[m_bufferIn].bindTexture(0, 0);
-
-		m_texNoise.bind(1);
-		gl::TextureRef sytex = m_clientSyphon.getTexture();
-		m_clientSyphon.bind();
-//		err = glGetError(); console() << "glerr 0: " << err;
-		sytex->bind(0);
-		
-		m_shdrDbg.bind();
-		m_shdrDbg.uniform("dbgPos", 1);
-		m_shdrDbg.uniform("dbgSy", 0);
-		m_shdrDbg.uniform("scale", (float)PARTICLES);
-		
-	//	gl::draw(m_vbo);
-
-		gl::drawSolidRect(Rectf(0.f, 0.f, getWindowHeight(), getWindowHeight()));
-		gl::popMatrices();
-		
-		m_shdrDbg.unbind();
-		sytex->unbind();
-		m_clientSyphon.unbind();
-		m_fbo[m_bufferIn].unbindTexture();
-		
-#endif
-		
-#if 1
 //		m_clientSyphon.draw(0.0, 0.0, getWindowWidth(), getWindowHeight());
 		gl::setMatricesWindow(getWindowSize());
 		gl::setViewport(getWindowBounds());
@@ -556,31 +507,19 @@ void ShdrPartsApp::draw()
 		}
 		
 //		gl::draw(m_fbo[0].getTexture());
-
-		
-#endif
-		
 	}
 	else
 	{
 		m_fboSy.bindFramebuffer();
 		gl::setMatricesWindow(m_fboSy.getSize());
 		gl::setViewport(m_fboSy.getBounds());
-//		glDrawBuffer(GL_COLOR_ATTACHMENT0_EXT);
 		GLenum bfrs[1] = {GL_COLOR_ATTACHMENT0_EXT};
 		glDrawBuffers(1, bfrs);
-		
-		
-//		gl::setMatricesWindow(getWindowSize());
-//		gl::setViewport(getWindowBounds());
 		
 		gl::clear(ColorA(.0f, .0f, .0f, 1.0f));
 		gl::enableAlphaBlending();
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-//		gl::disableAlphaBlending();
 		gl::disableDepthRead();
-//		glDisable(GL_DEPTH_TEST);
-
 		glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
 		
 		m_fbo[m_bufferIn].bindTexture(0, 0);
@@ -588,8 +527,6 @@ void ShdrPartsApp::draw()
 		m_fbo[m_bufferIn].bindTexture(2, 2);
 		
 		m_texSprite.bind(3);
-		
-		
 		
 		m_shdrPos.bind();
 		m_shdrPos.uniform("texPos", 0);
@@ -624,11 +561,7 @@ void ShdrPartsApp::draw()
 		
 		
 		*m_texSyRef = m_fboSy.getTexture();
-		//gl::draw(ref);
-		
 		m_srvSyphon.publishTexture(m_texSyRef);
-		
-//		m_srvSyphon.publishScreen();
 	
 	}
 		
