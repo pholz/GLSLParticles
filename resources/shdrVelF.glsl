@@ -49,6 +49,8 @@ void main()
         vel = origVel;
     }
 	
+	// we write to gl_FragData[n], n corresponds to the attachment of the bound FBO
+	
     //position + mass
 	gl_FragData[0] = vec4(pos, mass);
     //velocity + decay

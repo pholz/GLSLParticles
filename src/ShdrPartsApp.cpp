@@ -176,6 +176,7 @@ void ShdrPartsApp::setup()
 	float winW = getWindowWidth();
 	float winH = getWindowHeight();
 	
+	// generate some initial values for all of the particles
 	while (iter.line())
 	{
 		while (iter.pixel())
@@ -251,9 +252,8 @@ void ShdrPartsApp::setup()
 	format2.setWrap(GL_CLAMP, GL_CLAMP);
 	format2.setColorInternalFormat(GL_RGBA16F_ARB);
 	
-	
+	// these two will be alternatingly be used as input and output of the calculations
 	m_fbo[0] = gl::Fbo(PARTICLES, PARTICLES, format);
-	
 	m_fbo[1] = gl::Fbo(PARTICLES, PARTICLES, format);
 	
 	m_fboSy = gl::Fbo(SYWIDTH, SYHEIGHT, format2);
@@ -392,6 +392,7 @@ void ShdrPartsApp::update()
 	
 	///////
 	
+	// we don't need to update the kinect every frame, it doesn't make much difference in appearance
 	if (getElapsedFrames() % 2 == 0 && m_kinect->checkNewDepthFrame())
 		m_depthTex = m_kinect->getDepthImage();
 	
@@ -404,17 +405,14 @@ void ShdrPartsApp::update()
 	GLenum buffer[3] = { GL_COLOR_ATTACHMENT0_EXT, GL_COLOR_ATTACHMENT1_EXT, GL_COLOR_ATTACHMENT2_EXT };
 	glDrawBuffers(3, buffer);
 	
+	// we use the 3 attachments of the FBO as input textures
 	m_fbo[m_bufferOut].bindTexture(0, 0);
 	m_fbo[m_bufferOut].bindTexture(1, 1);
 	m_fbo[m_bufferOut].bindTexture(2, 2);
 	m_texVel.bind(3);
 	m_texPos.bind(4);
 	
-//	m_clientSyphon.bind();
-	
-//	gl::TextureRef sytex = m_clientSyphon.getTexture();
-//	sytex->bind(6);
-	
+	// if we have a depth image, send it in as the second noise texture
 	if (m_depthTex)
 		m_depthTex.bind(6);
 	else
@@ -448,11 +446,8 @@ void ShdrPartsApp::update()
 	m_texPos.unbind();
 	m_texNoise.unbind();
 	m_fbo[m_bufferIn].unbindFramebuffer();
-//	sytex->unbind();
 	if (m_depthTex)
 		m_depthTex.unbind();
-	
-//	m_clientSyphon.unbind();
 	
 	m_bufferIn = (m_bufferIn + 1) % 2;
 	m_bufferOut = (m_bufferIn + 1) % 2;
@@ -461,11 +456,12 @@ void ShdrPartsApp::update()
 
 void ShdrPartsApp::draw()
 {
+	// we need to call this to draw billboards instead of points
 	glEnable(GL_POINT_SPRITE);
 		
+	// just a debug view to see the kinect depth image. press 't' to activate
 	if (m_drawTextures)
 	{
-//		m_clientSyphon.draw(0.0, 0.0, getWindowWidth(), getWindowHeight());
 		gl::setMatricesWindow(getWindowSize());
 		gl::setViewport(getWindowBounds());
 		gl::enableAlphaBlending();
@@ -485,13 +481,6 @@ void ShdrPartsApp::draw()
 		
 		gl::pushMatrices();
 		gl::draw(sytex, Rectf(0.0, 0.0, PARTICLES, PARTICLES));
-		
-//		glBegin(GL_QUADS);
-//		glTexCoord2f( 0.0f, 0.0f); glVertex2f( 0.0f, 0.0f);
-//		glTexCoord2f( 0.0f, 1.0f); glVertex2f( 0.0f, getWindowHeight());
-//		glTexCoord2f( 1.0f, 1.0f); glVertex2f( getWindowHeight(), getWindowHeight());
-//		glTexCoord2f( 1.0f, 0.0f); glVertex2f( getWindowHeight(), 0.0f);
-//		glEnd();
 
 		gl::popMatrices();
 		
@@ -499,15 +488,15 @@ void ShdrPartsApp::draw()
 		m_clientSyphon.unbind();
 		m_shdrDbg.unbind();
 		
-		// kinect
+		// kinect image
 		
 		if (m_depthTex)
 		{
 			gl::draw(m_depthTex);
 		}
 		
-//		gl::draw(m_fbo[0].getTexture());
 	}
+	// the actual particle system drawing
 	else
 	{
 		m_fboSy.bindFramebuffer();
@@ -542,7 +531,6 @@ void ShdrPartsApp::draw()
 		gl::color(ColorA(1.f, 1.f, 1.f, 1.f));
 		gl::pushMatrices();
 		
-//		gl::scale(getWindowHeight() / (float)PARTICLES, getWindowHeight()/(float)PARTICLES, 1.0f);
 		gl::scale((float)SYWIDTH / (float)PARTICLES, (float)SYHEIGHT/(float)PARTICLES, 1.0f);
 		
 		gl::draw(m_vbo);
@@ -557,7 +545,7 @@ void ShdrPartsApp::draw()
 		
 		
 		m_fboSy.unbindFramebuffer();
-//		gl::draw(m_fboSy.getTexture());
+		gl::draw(m_fboSy.getTexture());
 		
 		
 		*m_texSyRef = m_fboSy.getTexture();
@@ -565,6 +553,7 @@ void ShdrPartsApp::draw()
 	
 	}
 		
+	// we could uncomment this to show the FPS, but drawing the text itself costs some performance
 //	drawText();
 	
 	if (getElapsedFrames() % 60 == 0)
